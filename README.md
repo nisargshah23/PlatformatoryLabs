@@ -58,6 +58,40 @@ P_labs/
     │   └── package.json
 ```
 
+## Development Timeline
+
+### Phase 1: Initial Setup and Basic Authentication
+1. Project structure setup
+2. Basic Express server configuration
+3. MongoDB integration
+4. User model creation
+5. Basic authentication routes
+
+### Phase 2: Frontend Development
+1. React application setup
+2. Authentication context implementation
+3. Login and Signup pages
+4. Protected route implementation
+5. Basic profile page
+
+### Phase 3: OAuth Integration
+1. Firebase configuration
+2. Google OAuth implementation
+3. OAuth token handling
+4. User profile synchronization
+
+### Phase 4: Profile Management
+1. Profile update functionality
+2. User data persistence
+3. Profile picture handling
+4. User statistics implementation
+
+### Phase 5: Security and Optimization
+1. JWT implementation
+2. Route protection
+3. Error handling
+4. Performance optimization
+
 ## Getting Started
 
 ### Prerequisites
@@ -81,6 +115,8 @@ npm install
 
 3. Install Backend dependencies:
 ```bash
+cd ../Backend/docker-compose
+docker-compose up 
 cd ../Backend/my-app
 npm install
 ```
@@ -110,6 +146,33 @@ npm start
 The application will be available at:
 - Frontend: http://localhost:3000
 - Backend: http://localhost:3000
+
+## Code Execution Flow
+
+### Authentication Flow
+1. User enters credentials or clicks Google Sign-In
+2. Frontend sends request to backend
+3. Backend validates credentials
+4. JWT token is generated
+5. Token is stored in localStorage
+6. User is redirected to profile page
+
+### Profile Update Flow
+1. User edits profile information
+2. Frontend sends PUT request with token
+3. Backend validates token
+4. Profile is updated in database
+5. Updated profile is returned
+6. UI is updated with new information
+
+### OAuth Flow
+1. User clicks Google Sign-In
+2. Firebase handles OAuth popup
+3. Google token is received
+4. Token is sent to backend
+5. Backend creates/updates user
+6. JWT token is generated
+7. User is redirected to profile
 
 ## API Endpoints
 
@@ -142,17 +205,7 @@ The application will be available at:
 - Secure password handling
 - OAuth integration with Google
 
-## Contributing
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Acknowledgments
 
