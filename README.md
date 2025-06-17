@@ -3,9 +3,13 @@
 A full-stack application that provides user authentication, profile management, and OAuth integration using Google Sign-In.
 
 # ScreenShorts
+## Signin
 ![Alt text](./Backend/my-app/image/signin.png)
+## Signup
 ![Alt text](./Backend/my-app/image/signup.png)
+## Profile
 ![Alt text](./Backend/my-app/image/profile.png)
+## Edit Profile
 ![Alt text](./Backend/my-app/image/editprofile.png)
 
 
