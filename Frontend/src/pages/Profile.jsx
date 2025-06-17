@@ -9,7 +9,8 @@ export default function Profile() {
   const [error, setError] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
-    name: '',
+    firstname: '',
+    lastname: '',
     phoneNumber: '',
     city: '',
     pincode: ''
@@ -29,7 +30,7 @@ export default function Profile() {
           throw new Error('Authentication required');
         }
 
-        const response = await fetch('http://localhost:3000/api/profile/profile', {
+        const response = await fetch(`http://localhost:3000/users/${email}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -39,12 +40,15 @@ export default function Profile() {
           throw new Error('Failed to fetch profile');
         }
 
-        const profileData = await response.json();
-        console.log('Fetched profile:', profileData);
+        const data = await response.json();
+        console.log('Fetched profile:', data);
+        
+        // Update to use the correct response structure
+        const profileData = data.user;
         setUserProfile(profileData);
-        console.log('Profile data:', profileData);
         setFormData({
-          name: profileData.name,
+          firstname: profileData.firstName,
+          lastname: profileData.lastName,
           phoneNumber: profileData.phoneNumber || '',
           city: profileData.city || '',
           pincode: profileData.pincode || ''
@@ -85,7 +89,7 @@ export default function Profile() {
         throw new Error('Authentication required');
       }
 
-      const response = await fetch('http://localhost:3000/api/profile/profile', {
+      const response = await fetch(`http://localhost:3000/users/${email}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -106,11 +110,13 @@ export default function Profile() {
 
       // Update the user profile with the response data
       setUserProfile(data.user);
+      console.log("data",userProfile)
       setFormData({
-        name: data.user.name,
-        phoneNumber: data.user.phoneNumber || '',
-        city: data.user.city || '',
-        pincode: data.user.pincode || ''
+        firstname: userProfile.firstName,
+        lastname: userProfile.lastName,
+        phoneNumber: userProfile.phoneNumber || '',
+        city: userProfile.city || '',
+        pincode: userProfile.pincode || ''
       });
       setSuccessMessage('Profile updated successfully');
       setIsEditing(false);
@@ -207,7 +213,7 @@ export default function Profile() {
                       Edit Profile
                     </button>
                   )}
-                </div>
+                  </div>
 
                 {isEditing ? (
                   <form onSubmit={handleSubmit} className="space-y-4">
@@ -277,7 +283,7 @@ export default function Profile() {
                         onClick={() => {
                           setIsEditing(false);
                           setFormData({
-                            name: userProfile?.name,
+                            name: userProfile?.firstName + ' ' + userProfile?.lastName,
                             phoneNumber: userProfile?.phoneNumber || '',
                             city: userProfile?.city || '',
                             pincode: userProfile?.pincode || ''

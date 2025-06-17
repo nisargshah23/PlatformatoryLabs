@@ -37,14 +37,15 @@ export default function Signup() {
       setError('');
       setLoading(true);
       
-      const response = await fetch('http://localhost:3000/api/auth/signup', {
+      const response = await fetch('http://localhost:3000/users/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          name: formData.displayName,
           email: formData.email,
+          firstName: formData.displayName.split(' ')[0],
+          lastName: formData.displayName.split(' ').slice(1).join(' '),
           password: formData.password
         }),
       });
@@ -52,12 +53,13 @@ export default function Signup() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to create account');
+        throw new Error(data.error || 'Failed to create account');
       }
 
-      // Store the token in localStorage
+      // Store the token and email in localStorage
       localStorage.setItem('token', data.token);
-      console.log(data.token);
+      localStorage.setItem('userEmail', formData.email);
+      console.log('Signup successful:', data);
       navigate('/profile');
     } catch (error) {
       setError('Failed to create account: ' + error.message);

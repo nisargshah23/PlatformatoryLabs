@@ -25,8 +25,8 @@ export default function Login() {
       console.error('Login error:', error);
       setError(error.message);
     } finally {
-      setLoading(false);
-    }
+    setLoading(false);
+  }
   };
 
   const handleGoogleSignIn = async () => {
@@ -37,7 +37,7 @@ export default function Login() {
       console.log('Google sign-in result:', result);
       
       if (result && result.token) {
-        navigate('/profile');
+      navigate('/profile');
       } else {
         throw new Error('Authentication failed');
       }
@@ -45,8 +45,8 @@ export default function Login() {
       console.error('Google sign-in error:', error);
       setError(error.message || 'Failed to sign in with Google');
     } finally {
-      setLoading(false);
-    }
+    setLoading(false);
+  }
   };
 
   return (

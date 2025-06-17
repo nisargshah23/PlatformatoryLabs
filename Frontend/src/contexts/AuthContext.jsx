@@ -100,48 +100,36 @@ export function AuthProvider({ children }) {
       const googleToken = await result.user.getIdToken();
       console.log('Google token:', googleToken);
 
-      // Send OAuth details to backend for token generation
-      const response = await fetch('http://localhost:3000/api/auth/login', {
+      // Try to sign up first (this will work for both new and existing users)
+      const signupResponse = await fetch('http://localhost:3000/users/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           email: result.user.email,
-          name: result.user.displayName,
-          photoURL: result.user.photoURL,
+          firstName: result.user.displayName?.split(' ')[0] || '',
+          lastName: result.user.displayName?.split(' ').slice(1).join(' ') || '',
+          password: 'google-oauth-' + result.user.uid, // Use a consistent password for OAuth users
           provider: 'google',
-          googleToken
+          photoURL: result.user.photoURL
         })
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to authenticate with backend');
+      if (!signupResponse.ok) {
+        const errorData = await signupResponse.json();
+        throw new Error(errorData.error || 'Failed to authenticate with backend');
       }
 
-      const data = await response.json();
-      console.log('Backend auth response:', data);
+      const signupData = await signupResponse.json();
+      console.log('Signup/Login successful:', signupData);
 
       // Store the token and email
-      localStorage.setItem('token', data.token);
+      localStorage.setItem('token', signupData.token);
       localStorage.setItem('userEmail', result.user.email);
 
-      // Fetch user profile
-      const profileResponse = await fetch('http://localhost:3000/api/profile/profile', {
-        headers: {
-          'Authorization': `Bearer ${data.token}`
-        }
-      });
-
-      if (!profileResponse.ok) {
-        throw new Error('Failed to fetch profile');
-      }
-
-      const profileData = await profileResponse.json();
-      console.log('Fetched profile:', profileData);
-
-      setCurrentUser(profileData);
-      return { token: data.token, user: profileData };
+      setCurrentUser(signupData.user);
+      return { token: signupData.token, user: signupData.user };
     } catch (error) {
       console.error('Google sign-in error:', error);
       if (error.code === 'auth/popup-closed-by-user') {
