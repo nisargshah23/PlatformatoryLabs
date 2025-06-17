@@ -99,6 +99,31 @@ P_labs/
 - npm or yarn
 - Google Cloud Platform account (for OAuth)
 
+### Temoral.io setup
+## step 1 - install the docker
+-/backEnd/my-app
+```bash
+cd path/to/companyAssignments
+```
+## step 2 - clone temporal's docker compose setup using official repo
+```bash
+ git clone https://github.com/temporalio/docker-compose.git temporal-server
+```
+# So this will create temporal-server
+
+companyAssignments/ ├── profiletemporal/ ← your app └── temporal-server/ ← Temporal server with Docker Compose
+
+# Step 3: Start Temporal using Docker Compose
+Move into the cloned Temporal server directory:
+```bash
+cd temporal-server
+```
+Start the Temporal server using Docker Compose:
+``` bash
+docker-compose up
+```
+
+
 ### Installation
 
 1. Clone the repository:
@@ -144,7 +169,7 @@ npm start
 ```
 
 The application will be available at:
-- Frontend: http://localhost:5173
+- Frontend: http://localhost:5173   
 - Backend: http://localhost:3000
 
 ## Code Execution Flow
